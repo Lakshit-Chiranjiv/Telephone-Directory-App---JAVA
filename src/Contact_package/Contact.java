@@ -5,6 +5,30 @@ public class Contact {
     String name;
     long tel_num;
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getTel_num() {
+        return tel_num;
+    }
+
+    public void setTel_num(long tel_num) {
+        this.tel_num = tel_num;
+    }
+
     public Contact()
     {
         this.name = "Anonymous-Contact_package.Contact";
