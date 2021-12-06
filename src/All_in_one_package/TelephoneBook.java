@@ -1,9 +1,10 @@
+package All_in_one_package;
+
 import java.util.*;
 import Contact_package.Contact;
 
 class NameComparator implements Comparator<Contact> {
 
-    // override the compare() method
     public int compare(Contact s1, Contact s2)
     {
         return s1.getName().compareTo(s2.getName());
@@ -320,6 +321,7 @@ public class TelephoneBook{
 
     public static void clearContacts()
     {
+        patternizeHeading("Clearing contacts");
         Scanner in = new Scanner(System.in);
         System.out.println("Are you sure,you want to clear the contacts?");
         System.out.println("enter 1 for yes, 0 for no : ");
@@ -327,7 +329,7 @@ public class TelephoneBook{
         if(clear_choice==1)
         {
             System.out.println("You can still get back your contacts if you cleared them by mistake");
-            System.out.println("Enter 1 to retrieve your contacts, 0 to permanentaly delete them : ");
+            System.out.println("Enter 1 to retrieve your contacts, 0 to permanently delete them : ");
             int retrieve_choice = in.nextInt();
             if(retrieve_choice == 1)
             {
@@ -335,7 +337,7 @@ public class TelephoneBook{
             }
             else
             {
-                System.out.println("ALL CONTACTS ARE PERMANENTALY DELETED!!!");
+                System.out.println("ALL CONTACTS ARE PERMANENTLY DELETED!!!");
                 contacts_array.clear();
             }
         }

@@ -1,7 +1,6 @@
 package Functionalities_package;
 import java.util.*;
 import Data_package.ContactsData;
-import Contact_package.Contact;
 
 
 public class Delete_Contact {
