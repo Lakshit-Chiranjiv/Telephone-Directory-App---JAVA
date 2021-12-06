@@ -1,9 +1,19 @@
 import java.util.*;
 import Contact_package.Contact;
+
+class NameComparator implements Comparator<Contact> {
+
+    // override the compare() method
+    public int compare(Contact s1, Contact s2)
+    {
+        return s1.getName().compareTo(s2.getName());
+    }
+}
+
 public class TelephoneBook{
 
     static ArrayList<Contact> contacts_array = new ArrayList<>();
-    static ArrayList<Contact> sorted_contacts_array = new ArrayList<>();
+//    static ArrayList<Contact> sorted_contacts_array = new ArrayList<>();
     static int sort_parameter = 0;
 
     public static void patternizeHeading(String str)
@@ -22,9 +32,10 @@ public class TelephoneBook{
         System.out.println("2 for Updating a contact");
         System.out.println("3 for Listing down all the contacts");
         System.out.println("4 for Deleting a contact");
-        System.out.println("5 for Sorting the contacts alphabetically");
+        System.out.println("5 for Sorting/Unsorting the contacts alphabetically");
         System.out.println("6 for Searching a contact");
-        System.out.println("7 for Closing the contact-book");
+        System.out.println("7 for Clearing your contact book");
+        System.out.println("8 for Closing the contact-book");
     }
 
     public static void addContact()
@@ -167,6 +178,9 @@ public class TelephoneBook{
         }
         else
         {
+            System.out.println("Contacts are sorted\n");
+            ArrayList<Contact> sorted_contacts_array = new ArrayList<>(contacts_array);
+            sorted_contacts_array.sort(new NameComparator());
             for(Contact cont : sorted_contacts_array){
                 cont.showContact();
                 System.out.println();
@@ -196,25 +210,146 @@ public class TelephoneBook{
             System.out.println("No such contact found in the contact book");
     }
 
-    public static void sortContacts()
+    public static void sortUnsortContacts()
     {
         if(contacts_array.size() == 0)
             System.out.println("Contact book has no contacts");
         else
         {
-            sort_parameter = 1;
-            System.out.println("Contacts sorted in alphabetical order Successfully!!!");
+            if(sort_parameter==0)
+            {
+                sort_parameter = 1;
+                System.out.println("Contacts Successfully sorted in alphabetical order!!!");
+            }
+            else
+            {
+                sort_parameter = 0;
+                System.out.println("Contacts Successfully unsorted as they were previously entered!!!");
+            }
+
         }
     }
 
     public static void searchContact()
     {
+        patternizeHeading("SEARCHING A CONTACT");
+        Scanner in = new Scanner(System.in);
+        String search_term;
+        int contact_found = 0,less_length;
+        System.out.print("Enter contact name or number to search : ");
+        search_term = in.nextLine();
+        ArrayList<Contact> search_related = new ArrayList<>();
+        if(Character.isLetter(search_term.trim().charAt(0)))
+        {
+            for(Contact cont : contacts_array)
+            {
+                if(cont.getName().equalsIgnoreCase(search_term))
+                {
+                    contact_found = 1;
+                    System.out.println("CONTACT FOUND");
+                    cont.showContact();
+                    break;
+                }
+                less_length = Math.min(cont.getName().length(),search_term.length());
+                if(cont.getName().length()>=search_term.length())
+                {
+                    if(search_term.equalsIgnoreCase(cont.getName().substring(0, less_length)))
+                        search_related.add(cont);
+                }
+                else
+                {
+                    if(search_term.substring(0, less_length).equalsIgnoreCase(cont.getName()))
+                        search_related.add(cont);
+                }
+            }
+            if(contact_found==0)
+                System.out.println("THERE IS NO SUCH CONTACT");
 
+            patternizeHeading("SOME RELATED CONTACTS");
+            if(search_related.size() == 0)
+                System.out.println("THERE ARE NO SEARCH RELATED CONTACTS");
+            else
+            {
+                for (Contact cont : search_related)
+                {
+                    cont.showContact();
+                    System.out.println();
+                }
+            }
+
+        }
+        else
+        {
+            for(Contact cont : contacts_array)
+            {
+                if(String.valueOf(cont.getTel_num()).equalsIgnoreCase(search_term))
+                {
+                    contact_found = 1;
+                    System.out.println("CONTACT FOUND");
+                    cont.showContact();
+                    break;
+                }
+                less_length = Math.min(String.valueOf(cont.getTel_num()).length(),search_term.length());
+                if(String.valueOf(cont.getTel_num()).length()>=search_term.length())
+                {
+                    if(search_term.equalsIgnoreCase(String.valueOf(cont.getTel_num()).substring(0, less_length)))
+                        search_related.add(cont);
+                }
+                else
+                {
+                    if(search_term.substring(0, less_length).equalsIgnoreCase(String.valueOf(cont.getTel_num())))
+                        search_related.add(cont);
+                }
+            }
+            if(contact_found==0)
+                System.out.println("THERE IS NO SUCH CONTACT");
+
+            patternizeHeading("SOME RELATED CONTACTS");
+            if(search_related.size() == 0)
+                System.out.println("THERE ARE NO SEARCH RELATED CONTACTS");
+            else
+            {
+                for (Contact cont : search_related)
+                {
+                    cont.showContact();
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    public static void clearContacts()
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Are you sure,you want to clear the contacts?");
+        System.out.println("enter 1 for yes, 0 for no : ");
+        int clear_choice = in.nextInt();
+        if(clear_choice==1)
+        {
+            System.out.println("You can still get back your contacts if you cleared them by mistake");
+            System.out.println("Enter 1 to retrieve your contacts, 0 to permanentaly delete them : ");
+            int retrieve_choice = in.nextInt();
+            if(retrieve_choice == 1)
+            {
+                System.out.println("ALL CONTACTS ARE RETRIEVED!!");
+            }
+            else
+            {
+                System.out.println("ALL CONTACTS ARE PERMANENTALY DELETED!!!");
+                contacts_array.clear();
+            }
+        }
     }
 
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+
+        contacts_array.add(new Contact("harry",8788));
+        contacts_array.add(new Contact("bunny",878868));
+        contacts_array.add(new Contact("john",874244));
+        contacts_array.add(new Contact("sherlock",872388));
+        contacts_array.add(new Contact("lestrade",8123788));
 
         int ask_menu = 1;
         int choice;
@@ -230,9 +365,10 @@ public class TelephoneBook{
                 case 2 -> updateContact();
                 case 3 -> listContacts();
                 case 4 -> deleteContact();
-                case 5 -> sortContacts();
+                case 5 -> sortUnsortContacts();
                 case 6 -> searchContact();
-                case 7 -> ask_menu = 0;
+                case 7 -> clearContacts();
+                case 8 -> ask_menu = 0;
             }
 
             if(ask_menu==0)
