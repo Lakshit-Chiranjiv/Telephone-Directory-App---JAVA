@@ -1,5 +1,7 @@
 import java.util.*;
 
+import Contact_package.Contact;
+import Data_package.ContactsData;
 import Functionalities_package.*;
 public class TelephoneDirectory {
 
@@ -17,6 +19,11 @@ public class TelephoneDirectory {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        ContactsData.contacts_array.add(new Contact("harry",8788));
+        ContactsData.contacts_array.add(new Contact("bunny",878868));
+        ContactsData.contacts_array.add(new Contact("john",874244));
+        ContactsData.contacts_array.add(new Contact("sherlock",872388));
+        ContactsData.contacts_array.add(new Contact("lestrade",8123788));
 
         int ask_menu = 1;
         int choice;
